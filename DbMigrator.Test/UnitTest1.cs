@@ -1,4 +1,5 @@
-﻿using DbMigrator.Core;
+﻿using System.Collections.Generic;
+using DbMigrator.Core;
 using DbMigrator.Test.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -12,21 +13,21 @@ namespace DbMigrator.Test
         {
             if (DbCreator.IsDatabaseExists<BankContext>() == false)
             {
-                var script = DbCreator.GenerateCreateDatabaseScript(
-                    new DbCreator.Database()
+                var database = new Database<BankContext, BankContextContextConfiguration>(
+                    "DbTest",
+                    "Arabic_CI_AS",
+                    new PrimaryFileGroup
                     {
-                        NAME = "DbTest",
-                        COLLATION = "Arabic_CI_AS"
+                        MasterDataFile = new MasterDataFile
+                        {
+                            NAME = "Arch1",
+                            FILENAME = @"D:\SalesData\archdat1.mdf",
+                            SIZE = 50,
+                            MAXSIZE = 100,
+                            FILEGROWTH = 50
+                        }
                     },
-                    new DbCreator.MasterDataFile()
-                    {
-                        NAME = "Arch1",
-                        FILENAME = @"D:\SalesData\archdat1.mdf",
-                        SIZE = 50,
-                        MAXSIZE = 100,
-                        FILEGROWTH = 50
-                    },
-                    new DbCreator.LogFile()
+                    new LogFile
                     {
                         NAME = "Arch1",
                         FILENAME = @"D:\SalesData\archdat1.mdf",
@@ -36,6 +37,9 @@ namespace DbMigrator.Test
                     }
                     );
 
+
+                
+                var script = database.GenerateScript();
                 script += DbCreator.GenerateTablesScript<BankContextContextConfiguration>();
             }
 
