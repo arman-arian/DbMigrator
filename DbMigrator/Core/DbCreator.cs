@@ -29,23 +29,23 @@ namespace DbMigrator.Core
             public decimal FILEGROWTH { get; set; }
         }
 
-        public class LogFile : DatabaseFile
+        public sealed class LogFile : DatabaseFile
         {
 
 
         }
 
-        public class DataFile : DatabaseFile
+        public abstract class DataFile : DatabaseFile
         {
 
         }
 
-        public class MasterDataFile : DataFile
+        public sealed class MasterDataFile : DataFile
         {
 
         }
 
-        public class NextDataFile : DataFile
+        public sealed class NextDataFile : DataFile
         {
 
         }
